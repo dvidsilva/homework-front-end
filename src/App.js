@@ -29,8 +29,8 @@ constructor(props) {
   renderResults = () => {   
     const results = this.state.repos.map((r, idx) =>
       <div className="repo" key={idx}>
-        <p><strong><a href={r.html_url}>{r.name}</a></strong></p>
-        <p>{r.description}</p>
+        <p className="name"><strong><a href={r.html_url}>{r.name}</a></strong></p>
+        <p className="description">{r.description}</p>
         <div className="watchers">
           <img src={star} className="star" alt="watchers" />
           {r.watchers}
