@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
+import star from './star.svg';
 import './App.css';
 import Github from './github';
 
@@ -26,9 +27,14 @@ constructor(props) {
   }
 
   renderResults = () => {   
-    const results = this.state.repos.map((result, idx) =>
-      <div className="repo">
-        {result.name}
+    const results = this.state.repos.map((r, idx) =>
+      <div className="repo" key={idx}>
+        <p><strong><a href={r.html_url}>{r.name}</a></strong></p>
+        <p>{r.description}</p>
+        <div className="watchers">
+          <img src={star} className="star" alt="watchers" />
+          {r.watchers}
+        </div>
       </div>
     );
     return this.state.loading ? <div>Loading...</div> : results;
@@ -37,9 +43,12 @@ constructor(props) {
   componentDidMount() {
 
     Github.get(`dvidsilva`).then(data => {
-      console.log(data);
-      this.setState({loading: false});
-      this.setState({repos: data});
+      return data.sort((a,b) => b.watchers > a.watchers ? 1 : b.watchers < a.watchers ? -1 : 0);
+    }).then(data=> {
+      this.setState({
+        loading: false,
+        repos: data
+      });
     });
   }
 
